@@ -2,19 +2,13 @@
 
 Lightweight WordPress container with Nginx & PHP-FPM 8.1 based on Alpine Linux.
 
-Fork of [TrafeX/docker-wordpress](https://github.com/TrafeX/docker-wordpress). Changes:
+Fork of a fork of [TrafeX/docker-wordpress](https://github.com/TrafeX/docker-wordpress).
 
-- Designed to use existing wordpress files (installs fresh copy if no files found)
+- May use existing wordpress files (installs fresh copy if no files found)
 - Healthcheck runs wp-cron (disabled automatically in wp-config.php)
-- Add php8-session
-- Add php redis extension
-- Add libvips support
 - Allows cron commands to be specified
 - Allows installation of user specified plugins at run time
-- Optionally installs a few recommended plugins:
-  - [VIPS Image Editor](https://github.com/henrygd/vips-image-editor) for better image processing (libvips is baked into the image)
-  - [Redis Object Cache](https://wordpress.org/plugins/redis-cache/) (see [docker-compose.yml](docker-compose.yml) for connection params)
-  - [Disable Media Pages](https://wordpress.org/plugins/disable-media-pages/) because images don't need their own page
+- Uses [VIPS Image Editor](https://github.com/henrygd/vips-image-editor) for better image processing (libvips is baked into the image)
 
 ## Usage
 

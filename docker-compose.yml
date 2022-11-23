@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 services:
   # optional
@@ -14,15 +14,10 @@ services:
     volumes:
       - PATH_TO_WORDPRESS_FILES:/usr/src/wordpress
     ports:
-      - "127.0.0.1:8000:80"
+      - '127.0.0.1:8000:80'
     environment:
-      # installs recommended plugins (see readme)
-      INSTALL_PLUGINS: "true"
       # specify any plugins to install by slug
-      ADDITIONAL_PLUGINS: "hello-dolly post-smtp"
-      # redis host and db (other sites can use dbs up to 15)
-      WP_REDIS_HOST: "redis-wp"
-      WP_REDIS_DATABASE: 0
+      ADDITIONAL_PLUGINS: 'w3-total-cache post-smtp ninjafirewall disable-media-pages'
       # cron jobs to run from within container (separate lines with \n)
       CRON: "* * * * * touch hello-world \n
         0 * * * * curl http://127.0.0.1/webhook &>/dev/null"
