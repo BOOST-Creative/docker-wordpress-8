@@ -61,6 +61,6 @@ else
 fi
 
 # make sure plugins have correct permissions
-chown -R nobody:nogroup /usr/src/wordpress/wp-content/plugins
+chown -R nobody: /usr/src/wordpress/wp-content/plugins
 
 exec "$@"
