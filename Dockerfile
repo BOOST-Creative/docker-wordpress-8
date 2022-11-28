@@ -38,7 +38,7 @@ RUN apk --no-cache add \
   less
 
 # Create symlink so programs depending on `php` still function
-RUN ln -s /usr/bin/php81 /usr/bin/php
+# RUN ln -s /usr/bin/php81 /usr/bin/php
 
 # Configure nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
