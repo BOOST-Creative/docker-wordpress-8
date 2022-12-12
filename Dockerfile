@@ -30,6 +30,7 @@ RUN apk --no-cache add \
   php81-tokenizer \
   php81-gd \
   php81-pecl-redis \
+  php81-soap \
   mysql-client \
   nginx \
   supervisor \
