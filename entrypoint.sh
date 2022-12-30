@@ -43,9 +43,26 @@ fi
 for PLUGIN in $ADDITIONAL_PLUGINS; do
 	echo "Adding plugin: $PLUGIN"
 	if [ ! "$(ls -A "/usr/src/wordpress/wp-content/plugins/$PLUGIN" 2>/dev/null)" ]; then
-		cd /usr/src/wordpress && wp plugin install --activate $PLUGIN
+		cd /usr/src/wordpress && wp plugin install --activate "$PLUGIN"
 	fi
 done
+
+# auto setup w3 total cache
+if [ "$REDIS_HOST" ]; then
+	if wp plugin is-active w3-total-cache; then
+			cd /usr/src/wordpress && wp w3-total-cache option set dbcache.engine "redis"
+			cd /usr/src/wordpress && wp w3-total-cache option set objectcache.engine "redis"
+			cd /usr/src/wordpress && wp w3-total-cache option set pgcache.engine "redis"
+
+			cd /usr/src/wordpress && wp w3-total-cache option set dbcache.redis.servers "$REDIS_HOST" --type=array
+			cd /usr/src/wordpress && wp w3-total-cache option set objectcache.redis.servers "$REDIS_HOST" --type=array
+			cd /usr/src/wordpress && wp w3-total-cache option set pgcache.redis.servers "$REDIS_HOST" --type=array
+
+			cd /usr/src/wordpress && wp w3-total-cache option set dbcache.enabled true --type=boolean
+			cd /usr/src/wordpress && wp w3-total-cache option set objectcache.enabled true --type=boolean
+			cd /usr/src/wordpress && wp w3-total-cache option set pgcache.enabled true --type=boolean
+	fi
+fi
 
 # handle cron
 if [ -z "$CRON" ]; then
