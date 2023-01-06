@@ -49,7 +49,10 @@ for PLUGIN in $ADDITIONAL_PLUGINS; do
 done
 
 # auto setup w3 total cache
-if [ "$REDIS_HOST" ]; then
+if [ "$REDIS_HOST" ] && [[ ! -f "/usr/src/wordpress/.cache-configured" ]]; then
+	if wp plugin --skip-themes is-active litespeed-cache; then
+		wp plugin deactivate litespeed-cache
+	fi
 	if wp plugin --skip-themes is-active w3-total-cache; then
 			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set dbcache.engine "redis"
 			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set objectcache.engine "redis"
@@ -63,9 +66,12 @@ if [ "$REDIS_HOST" ]; then
 			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set objectcache.enabled true --type=boolean
 			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set pgcache.enabled true --type=boolean
 			
-			# cache html for 10 min
-			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set browsercache.html.lifetime 600 --type=integer
+			# cache html for 20 min
+			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set browsercache.html.lifetime 1200 --type=integer
 			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set browsercache.html.expires true --type=boolean
+
+			# add file to prevent this from running again
+			touch /usr/src/wordpress/.cache-configured
 	fi
 fi
 
