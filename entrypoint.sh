@@ -1,11 +1,12 @@
 #! /bin/bash
 
 # terminate on errors
-set -e
+# set -e
 
 # install wordpress if necessary
 CONFIG=/usr/src/wordpress/wp-config.php
 SAMPLE=/usr/src/wordpress/wp-config-sample.php
+
 if [ "$(ls -A /usr/src/wordpress)" ]; then
 	echo "Wordpress folder is not empty. Skipping install..."
 else
