@@ -51,7 +51,7 @@ done
 # auto setup w3 total cache
 if [ "$REDIS_HOST" ] && [[ ! -f "/usr/src/wordpress/.cache-configured" ]]; then
 	if wp plugin --skip-themes is-active litespeed-cache; then
-		wp plugin deactivate litespeed-cache
+		wp plugin--skip-themes --uninstall deactivate litespeed-cache
 	fi
 	if wp plugin --skip-themes is-active w3-total-cache; then
 			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set dbcache.engine "redis"
