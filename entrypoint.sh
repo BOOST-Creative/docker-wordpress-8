@@ -42,8 +42,8 @@ fi
 
 # install additional plugins
 for PLUGIN in $ADDITIONAL_PLUGINS; do
-	echo "Adding plugin: $PLUGIN"
 	if [ ! "$(ls -A "/usr/src/wordpress/wp-content/plugins/$PLUGIN" 2>/dev/null)" ]; then
+		echo "Adding plugin: $PLUGIN"
 		cd /usr/src/wordpress && wp plugin --skip-themes install --activate "$PLUGIN"
 	fi
 done
@@ -54,28 +54,30 @@ if [ "$REDIS_HOST" ] && [[ ! -f "/usr/src/wordpress/.cache-configured" ]]; then
 		wp plugin--skip-themes --uninstall deactivate litespeed-cache
 	fi
 	if wp plugin --skip-themes is-active w3-total-cache; then
-			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set dbcache.engine "redis"
-			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set objectcache.engine "redis"
-			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set pgcache.engine "redis"
+		echo "Updating cache options..."
+		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set dbcache.engine "redis"
+		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set objectcache.engine "redis"
+		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set pgcache.engine "redis"
 
-			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set dbcache.redis.servers "$REDIS_HOST" --type=array
-			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set objectcache.redis.servers "$REDIS_HOST" --type=array
-			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set pgcache.redis.servers "$REDIS_HOST" --type=array
+		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set dbcache.redis.servers "$REDIS_HOST" --type=array
+		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set objectcache.redis.servers "$REDIS_HOST" --type=array
+		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set pgcache.redis.servers "$REDIS_HOST" --type=array
 
-			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set dbcache.enabled true --type=boolean
-			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set objectcache.enabled true --type=boolean
-			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set pgcache.enabled true --type=boolean
-			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set browsercache.enabled true --type=boolean
-			
-			# cache unchanged pages for 24 hours
-			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set pgcache.lifetime 86400 --type=integer
+		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set dbcache.enabled true --type=boolean
+		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set objectcache.enabled true --type=boolean
+		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set pgcache.enabled true --type=boolean
+		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set browsercache.enabled true --type=boolean
+		
+		# cache unchanged pages for 24 hours
+		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set pgcache.lifetime 86400 --type=integer
 
-			# browser cache html for 20 min
-			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set browsercache.html.lifetime 1200 --type=integer
-			cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set browsercache.html.expires true --type=boolean
+		# browser cache html for 20 min
+		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set browsercache.html.lifetime 1200 --type=integer
+		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set browsercache.html.expires true --type=boolean
+		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set browsercache.html.cache.control true --type=boolean
 
-			# add file to prevent this from running again
-			touch /usr/src/wordpress/.cache-configured
+		# add file to prevent this from running again
+		touch /usr/src/wordpress/.cache-configured
 	fi
 fi
 
