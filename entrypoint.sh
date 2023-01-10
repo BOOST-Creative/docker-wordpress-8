@@ -28,11 +28,15 @@ if [[ ! -f "$CONFIG" ]]; then
 	exec "$@"
 fi
 
-# disable cron - handled by healthcheck
-cd /usr/src/wordpress && wp config set DISABLE_WP_CRON true --raw --skip-themes --skip-plugins
-
-# limit post revisions
-cd /usr/src/wordpress && wp config set WP_POST_REVISIONS 5 --raw --skip-themes --skip-plugins
+# good default wp config settings
+if [[ ! -f "/usr/src/wordpress/.config-configured" ]]; then
+	# disable cron - handled by healthcheck
+	cd /usr/src/wordpress && wp config set DISABLE_WP_CRON true --raw --skip-themes --skip-plugins
+	# limit post revisions
+	cd /usr/src/wordpress && wp config set WP_POST_REVISIONS 5 --raw --skip-themes --skip-plugins
+	# add file to prevent this from running again
+	touch /usr/src/wordpress/.config-configured
+fi
 
 # install vips image editor
 if [ ! "$(ls -A "/usr/src/wordpress/wp-content/plugins/vips-image-editor" 2>/dev/null)" ]; then
