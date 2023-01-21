@@ -85,6 +85,11 @@ if [ "$REDIS_HOST" ] && [[ ! -f "/usr/src/wordpress/.cache-configured" ]]; then
 	fi
 fi
 
+# set timezone
+if [ "$TZ" ] && [[ -f "/usr/share/zoneinfo/America/$TZ" ]]; then
+	cp "/usr/share/zoneinfo/America/$TZ" /etc/localtime
+fi
+
 # handle cron
 if [ -z "$CRON" ]; then
   echo "No cron commands specified..."

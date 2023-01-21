@@ -36,7 +36,8 @@ RUN apk --no-cache add \
   supervisor \
   curl \
   bash \
-  less
+  less \
+  tzdata
 
 # Create symlink so programs depending on `php` still function
 # RUN ln -s /usr/bin/php81 /usr/bin/php
