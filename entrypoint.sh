@@ -101,4 +101,7 @@ fi
 # make sure plugins have correct permissions
 chown -R nobody: /usr/src/wordpress/wp-content
 
+# set file for syslog
+syslogd -O /var/log/messages
+
 exec "$@"
