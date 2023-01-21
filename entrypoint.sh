@@ -86,8 +86,8 @@ if [ "$REDIS_HOST" ] && [[ ! -f "/usr/src/wordpress/.cache-configured" ]]; then
 fi
 
 # set timezone
-if [ "$TZ" ] && [[ -f "/usr/share/zoneinfo/America/$TZ" ]]; then
-	cp "/usr/share/zoneinfo/America/$TZ" /etc/localtime
+if [ "$TZ" ] && [[ -f "/usr/share/zoneinfo/$TZ" ]]; then
+	cp "/usr/share/zoneinfo/$TZ" /etc/localtime
 fi
 
 # handle cron
