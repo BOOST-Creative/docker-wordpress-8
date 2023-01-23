@@ -34,6 +34,8 @@ if [[ ! -f "/usr/src/wordpress/.config-configured" ]]; then
 	cd /usr/src/wordpress && wp config set DISABLE_WP_CRON true --raw --skip-themes --skip-plugins
 	# limit post revisions
 	cd /usr/src/wordpress && wp config set WP_POST_REVISIONS 5 --raw --skip-themes --skip-plugins
+	# block username enumeration with wp-fail2ban
+	cd /usr/src/wordpress && wp config set WP_FAIL2BAN_BLOCK_USER_ENUMERATION true --raw --skip-themes --skip-plugins
 	# add file to prevent this from running again
 	touch /usr/src/wordpress/.config-configured
 fi
@@ -83,11 +85,6 @@ if [ "$REDIS_HOST" ] && [[ ! -f "/usr/src/wordpress/.cache-configured" ]]; then
 		# add file to prevent this from running again
 		touch /usr/src/wordpress/.cache-configured
 	fi
-fi
-
-# set timezone
-if [ "$TZ" ] && [[ -f "/usr/share/zoneinfo/$TZ" ]]; then
-	cp "/usr/share/zoneinfo/$TZ" /etc/localtime
 fi
 
 # handle cron
