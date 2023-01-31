@@ -104,6 +104,6 @@ fi
 chown -R nobody: /usr/src/wordpress/wp-content
 
 # set file for syslog
-syslogd -O /var/log/messages
+syslogd -O /var/log/messages -s 0
 
 exec "$@"
