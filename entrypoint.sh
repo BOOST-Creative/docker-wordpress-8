@@ -57,7 +57,7 @@ done
 # auto setup w3 total cache
 if [ "$REDIS_HOST" ] && [[ ! -f "/usr/src/wordpress/.cache-configured" ]]; then
 	if wp plugin --skip-themes is-active litespeed-cache; then
-		wp plugin--skip-themes --uninstall deactivate litespeed-cache
+		wp plugin --skip-themes --uninstall deactivate litespeed-cache
 	fi
 	if wp plugin --skip-themes is-active w3-total-cache; then
 		echo "Updating cache options..."
