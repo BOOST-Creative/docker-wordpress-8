@@ -31,6 +31,7 @@ RUN apk --no-cache add \
   php81-gd \
   php81-pecl-redis \
   php81-soap \
+  php81-pdo \
   mysql-client \
   nginx \
   supervisor \
