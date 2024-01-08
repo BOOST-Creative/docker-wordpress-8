@@ -78,7 +78,7 @@ if [ "$REDIS_HOST" ] && [[ ! -f "/usr/src/wordpress/.cache-configured" ]]; then
 		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set pgcache.lifetime 86400 --type=integer
 
 		# browser cache html for 5 min
-		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set browsercache.html.lifetime 300 --type=integer
+		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set browsercache.html.lifetime 180 --type=integer
 		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set browsercache.html.expires true --type=boolean
 		cd /usr/src/wordpress && wp --skip-themes w3-total-cache option set browsercache.html.cache.control true --type=boolean
 
