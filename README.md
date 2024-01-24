@@ -1,6 +1,6 @@
 # WordPress Docker Container
 
-Lightweight WordPress container with Nginx & PHP-FPM 8.1 based on Alpine Linux.
+Lightweight WordPress container with Nginx & PHP-FPM 8.2 based on Alpine Linux.
 
 Fork of a fork of [TrafeX/docker-wordpress](https://github.com/TrafeX/docker-wordpress).
 
