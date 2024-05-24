@@ -1,4 +1,4 @@
-FROM alpine:3.19
+FROM alpine:3.20
 
 # Install packages
 RUN apk --no-cache add \
@@ -32,6 +32,7 @@ RUN apk --no-cache add \
   php82-pecl-redis \
   php82-soap \
   php82-pdo \
+  php82-sqlite3 \
   mysql-client \
   nginx \
   supervisor \
