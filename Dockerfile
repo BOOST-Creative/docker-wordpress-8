@@ -42,7 +42,7 @@ RUN apk --no-cache add \
   tzdata
 
 # Create symlink so programs depending on `php` still function
-# RUN ln -s /usr/bin/php82 /usr/bin/php
+RUN ln -s /usr/bin/php82 /usr/bin/php
 
 # Configure nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
