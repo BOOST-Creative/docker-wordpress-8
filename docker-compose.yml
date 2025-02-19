@@ -12,7 +12,7 @@ services:
     environment:
       TZ: 'America/New_York'
       # specify any plugins to install by slug
-      ADDITIONAL_PLUGINS: 'w3-total-cache post-smtp ninjafirewall disable-media-pages'
+      ADDITIONAL_PLUGINS: 'w3-total-cache disable-media-pages'
       # cron jobs to run from within container (separate lines with \n)
       CRON: "* * * * * touch hello-world \n
         0 * * * * curl http://127.0.0.1/webhook &>/dev/null"

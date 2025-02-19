@@ -13,7 +13,7 @@ else
 	echo "Wordpress files do not exist. Installing..."
 	if [[ ! -f "$SAMPLE" ]]; then
 		# download & extract wordpress
-		wget -q https://wordpress.org/latest.tar.gz \
+		curl -sO https://wordpress.org/latest.tar.gz \
 			&& tar -xzkf latest.tar.gz -C /usr/src/ \
 			&& rm latest.tar.gz \
 			&& chown -R nobody: /usr/src/wordpress
