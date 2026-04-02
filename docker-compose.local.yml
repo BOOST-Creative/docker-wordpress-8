@@ -1,26 +1,33 @@
 services:
   example-site:
     container_name: example-site
-     image: ghcr.io/boost-creative/docker-wordpress-8:latest
-    restart: unless-stopped
+    # image: ghcr.io/boost-creative/docker-wordpress-8:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # restart: unless-stopped
     mem_limit: ${WP_MEM_LIMIT:-512m}
     cpus: ${WP_CPU_LIMIT:-2}
     depends_on:
       - example-site-db
+      - example-site-valkey
     volumes:
       - ./wordpress:/usr/src/wordpress
       - sock:/tmp/sock:ro
+      # - './db:/var/db'
     ports:
       - "127.0.0.1:8000:80"
     environment:
       TZ: "America/New_York"
-      # DB_HOST: localhost:/tmp/sock/mysqld.sock
       # specify any plugins to install by slug
-      # ADDITIONAL_PLUGINS: "better-wp-security simple-cloudflare-turnstile"
-      # cron jobs to run from within container 
-      # CRON: |
-      #   /30 * * * * wp db export /var/db/wp.sql
-      #   0 * * * * curl http://127.0.0.1/webhook &>/dev/null"
+      # ADDITIONAL_PLUGINS: "cache-enabler redis-cache"
+      DB_HOST: localhost:/tmp/sock/mysqld.sock
+      REDIS_HOST: /tmp/sock/valkey.sock
+      # cron jobs to run from within container (separate lines with \n)
+      CRON: |
+        * * * * * touch hello-world
+        /30 * * * * wp db export --path=/usr/src/wordpress /var/db/wp.sql
+        0 * * * * curl http://127.0.0.1/webhook &>/dev/null"
   example-site-db:
     container_name: example-site-mariadb
     image: 'yobasystems/alpine-mariadb:11'
@@ -37,14 +44,14 @@ services:
       - db:/var/lib/mysql
       - ./config/mariadb/my.cnf:/etc/my.cnf
       - ./config/mariadb/db-entrypoint.sh:/scripts/run.sh
-  # example-site-valkey:
-  #   container_name: example-site-valkey
-  #   image: 'valkey/valkey:8-alpine'
-  #   restart: unless-stopped
-  #   command: sh -c "mkdir -p /tmp/sock && rm -f /tmp/sock/valkey.sock && valkey-server /usr/local/etc/valkey/valkey.conf"
-  #   volumes:
-  #     - ./config/valkey.conf:/usr/local/etc/valkey/valkey.conf
-  #     - sock:/tmp/sock
+  example-site-valkey:
+    container_name: example-site-valkey
+    image: 'valkey/valkey:8-alpine'
+    restart: unless-stopped
+    command: sh -c "mkdir -p /tmp/sock && rm -f /tmp/sock/valkey.sock && valkey-server /usr/local/etc/valkey/valkey.conf"
+    volumes:
+      - ./config/valkey.conf:/usr/local/etc/valkey/valkey.conf
+      - sock:/tmp/sock
 
 volumes:
   db: null
