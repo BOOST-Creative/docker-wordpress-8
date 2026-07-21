@@ -30,7 +30,7 @@ Nginx and PHP error logs are directed to dedicated log files managed and rotated
 - **Nginx Error Log:** `/var/log/nginx/error.log`
 - **PHP / PHP-FPM Error Log:** `/var/log/php83/error.log`
 
-Log files are capped at 5MB each with 5 rotations (`error.log.1`, `error.log.2`, etc.) to prevent unbounded disk growth. You can view or tail these logs using `docker exec`:
+Log files are capped at 5MB each with 5 rotations (`error.log.1`, `error.log.2`, etc.). You can view or tail these logs using `docker exec`:
 
 ```bash
 # View Nginx errors
