@@ -19,7 +19,6 @@ services:
       # ADDITIONAL_PLUGINS: "better-wp-security simple-cloudflare-turnstile"
       # cron jobs to run from within container 
       # CRON: |
-      #   /30 * * * * wp db export /var/db/wp.sql
       #   0 * * * * curl http://127.0.0.1/webhook &>/dev/null"
   example-site-db:
     container_name: example-site-mariadb
@@ -37,14 +36,6 @@ services:
       - db:/var/lib/mysql
       - ./config/mariadb/my.cnf:/etc/my.cnf
       - ./config/mariadb/db-entrypoint.sh:/scripts/run.sh
-  # example-site-valkey:
-  #   container_name: example-site-valkey
-  #   image: 'valkey/valkey:8-alpine'
-  #   restart: unless-stopped
-  #   command: sh -c "mkdir -p /tmp/sock && rm -f /tmp/sock/valkey.sock && valkey-server /usr/local/etc/valkey/valkey.conf"
-  #   volumes:
-  #     - ./config/valkey.conf:/usr/local/etc/valkey/valkey.conf
-  #     - sock:/tmp/sock
 
 volumes:
   db: null
