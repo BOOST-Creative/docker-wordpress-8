@@ -4,37 +4,37 @@
 # set -e
 
 # Function to check for and import SQL file if the database is empty
-# import_sql_if_needed() {
-#   echo "Checking for SQL file to import..."
-#   # Look for any .sql file in the WordPress directory
-#   SQL_FILES=(/usr/src/wordpress/*.sql)
+import_sql_if_needed() {
+  echo "Checking for SQL file to import..."
+  # Look for any .sql file in the WordPress directory
+  SQL_FILES=(/usr/src/wordpress/*.sql)
 
-#   if [ ${#SQL_FILES[@]} -gt 0 ] && [ -f "${SQL_FILES[0]}" ]; then
-#     SQL_FILE="${SQL_FILES[0]}"
-#     echo "Found SQL file: $SQL_FILE. Testing database connection..."
-#     # wp cli cache clear --path=/usr/src/wordpress --skip-themes --skip-plugins
-#     sleep 10 # wait to make sure database is ready
-#     if wp db check --path=/usr/src/wordpress --skip-themes --skip-plugins &>/dev/null; then
-#       # Check if database is empty (no tables)
-#       TABLES=$(wp db tables --all-tables-with-prefix --path=/usr/src/wordpress --skip-themes --skip-plugins 2>/dev/null)
-#       if [ -z "$TABLES" ]; then
-#         echo "Database is empty. Importing SQL file..."
-#         if wp db import "$SQL_FILE" --path=/usr/src/wordpress --skip-themes --skip-plugins; then
-#           rm "$SQL_FILE"
-#           echo "SQL file imported successfully."
-#         else
-#           echo "Failed to import SQL file. Please check SQL file format."
-#         fi
-#       else
-#         echo "Database already contains tables. Skipping SQL import."
-#       fi
-#     else
-#       echo "Failed to connect to database. SQL import will be skipped."
-#     fi
-#   else
-#     echo "No SQL file found in /usr/src/wordpress. Skipping import."
-#   fi
-# }
+  if [ ${#SQL_FILES[@]} -gt 0 ] && [ -f "${SQL_FILES[0]}" ]; then
+    SQL_FILE="${SQL_FILES[0]}"
+    echo "Found SQL file: $SQL_FILE. Testing database connection..."
+    # wp cli cache clear --path=/usr/src/wordpress --skip-themes --skip-plugins
+    sleep 10 # wait to make sure database is ready
+    if wp db check --path=/usr/src/wordpress --skip-themes --skip-plugins &>/dev/null; then
+      # Check if database is empty (no tables)
+      TABLES=$(wp db tables --all-tables-with-prefix --path=/usr/src/wordpress --skip-themes --skip-plugins 2>/dev/null)
+      if [ -z "$TABLES" ]; then
+        echo "Database is empty. Importing SQL file..."
+        if wp db import "$SQL_FILE" --path=/usr/src/wordpress --skip-themes --skip-plugins; then
+          rm "$SQL_FILE"
+          echo "SQL file imported successfully."
+        else
+          echo "Failed to import SQL file. Please check SQL file format."
+        fi
+      else
+        echo "Database already contains tables. Skipping SQL import."
+      fi
+    else
+      echo "Failed to connect to database. SQL import will be skipped."
+    fi
+  else
+    echo "No SQL file found in /usr/src/wordpress. Skipping import."
+  fi
+}
 
 # install wordpress if necessary
 CONFIG=/usr/src/wordpress/wp-config.php
@@ -57,8 +57,8 @@ fi
 
 # exit if no wp-config.php
 if [[ ! -f "$CONFIG" ]]; then
-	echo "*** Config file not found. Please restart after installing Wordpress. ***"
-	exec "$@"
+  echo "*** Config file not found. Please restart after installing Wordpress. ***"
+  exec "$@"
 fi
 
 # good default wp config settings
@@ -94,7 +94,7 @@ if [[ ! -f "/usr/src/wordpress/.wp-config-configured" ]]; then
     rm -f /usr/src/wordpress/wp-content/w3tc-config/master.php
 
     # Try to import SQL if database is empty
-    # import_sql_if_needed
+    import_sql_if_needed
 
     # add file to prevent this from running again only if commands were successful
     touch /usr/src/wordpress/.wp-config-configured
@@ -198,3 +198,4 @@ fi
 syslogd -O /var/log/messages -s 0
 
 exec "$@"
+
