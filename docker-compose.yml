@@ -1,7 +1,7 @@
 services:
   example-site:
     container_name: example-site
-     image: ghcr.io/boost-creative/docker-wordpress-8:latest
+    image: ghcr.io/boost-creative/docker-wordpress-8:latest
     restart: unless-stopped
     mem_limit: ${WP_MEM_LIMIT:-512m}
     cpus: ${WP_CPU_LIMIT:-2}
@@ -17,12 +17,13 @@ services:
       # DB_HOST: localhost:/tmp/sock/mysqld.sock
       # specify any plugins to install by slug
       # ADDITIONAL_PLUGINS: "better-wp-security simple-cloudflare-turnstile"
-      # cron jobs to run from within container 
+      # cron jobs to run from within container
       # CRON: |
       #   0 * * * * curl http://127.0.0.1/webhook &>/dev/null"
+      #   8 2 * * * sleep $(tr -dc 0-9 < /dev/urandom | head -c2) && wp db export --path=/usr/src/wordpress /var/db/wp.sql
   example-site-db:
     container_name: example-site-mariadb
-    image: 'yobasystems/alpine-mariadb:11'
+    image: "yobasystems/alpine-mariadb:11"
     restart: unless-stopped
     mem_limit: ${WP_MEM_LIMIT:-512m}
     # cpus: ${WP_CPU_LIMIT:-4}

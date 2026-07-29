@@ -37,6 +37,7 @@ RUN apk --no-cache add \
   nginx \
   supervisor \
   inotify-tools \
+  mariadb-client \
   curl \
   bash \
   less \

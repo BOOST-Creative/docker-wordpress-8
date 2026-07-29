@@ -13,7 +13,7 @@ import_sql_if_needed() {
     SQL_FILE="${SQL_FILES[0]}"
     echo "Found SQL file: $SQL_FILE. Testing database connection..."
     # wp cli cache clear --path=/usr/src/wordpress --skip-themes --skip-plugins
-    sleep 10 # wait to make sure database is ready
+    sleep 3 # wait to make sure database is ready
     if wp db check --path=/usr/src/wordpress --skip-themes --skip-plugins &>/dev/null; then
       # Check if database is empty (no tables)
       TABLES=$(wp db tables --all-tables-with-prefix --path=/usr/src/wordpress --skip-themes --skip-plugins 2>/dev/null)
@@ -198,4 +198,3 @@ fi
 syslogd -O /var/log/messages -s 0
 
 exec "$@"
-
