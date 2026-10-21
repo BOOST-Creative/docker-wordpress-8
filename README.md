@@ -1,6 +1,6 @@
 # WordPress Docker Container
 
-Lightweight WordPress container with Nginx & PHP-FPM 8.3 based on Alpine Linux.
+Lightweight WordPress container with Nginx & PHP-FPM 8.5 based on Alpine Linux.
 
 Fork of a fork of [TrafeX/docker-wordpress](https://github.com/TrafeX/docker-wordpress).
 
@@ -28,7 +28,7 @@ This image includes [wp-cli](https://wp-cli.org/) which can be used like this:
 Nginx and PHP error logs are directed to dedicated log files managed and rotated by Supervisord:
 
 - **Nginx Error Log:** `/var/log/nginx/error.log`
-- **PHP / PHP-FPM Error Log:** `/var/log/php83/error.log`
+- **PHP / PHP-FPM Error Log:** `/var/log/php85/error.log`
 
 Log files are capped at 5MB each with 5 rotations (`error.log.1`, `error.log.2`, etc.). You can view or tail these logs using `docker exec`:
 
@@ -37,5 +37,5 @@ Log files are capped at 5MB each with 5 rotations (`error.log.1`, `error.log.2`,
 docker exec -it <your container name> tail -f /var/log/nginx/error.log
 
 # View PHP errors
-docker exec -it <your container name> tail -f /var/log/php83/error.log
+docker exec -it <your container name> tail -f /var/log/php85/error.log
 ```

@@ -2,38 +2,36 @@ FROM alpine:3.24
 
 # Install packages
 RUN apk --no-cache add \
-  php83 \
-  php83-fpm \
-  php83-mysqli \
-  php83-json \
-  php83-openssl \
-  php83-curl \
-  php83-zlib \
-  php83-xml \
-  php83-phar \
-  php83-intl \
-  php83-dom \
-  php83-xmlreader \
-  php83-xmlwriter \
-  php83-exif \
-  php83-fileinfo \
-  php83-sodium \
-  php83-simplexml \
-  php83-ctype \
-  php83-mbstring \
-  php83-zip \
-  php83-opcache \
-  php83-iconv \
-  php83-pecl-imagick \
-  php83-pecl-vips \
-  php83-session \
-  php83-tokenizer \
-  php83-gd \
-  php83-pecl-redis \
-  php83-soap \
-  php83-pdo \
-  php83-sqlite3 \
-  php83-pecl-apcu \
+  php85 \
+  php85-fpm \
+  php85-mysqli \
+  php85-json \
+  php85-openssl \
+  php85-curl \
+  php85-zlib \
+  php85-xml \
+  php85-phar \
+  php85-intl \
+  php85-dom \
+  php85-xmlreader \
+  php85-xmlwriter \
+  php85-exif \
+  php85-fileinfo \
+  php85-sodium \
+  php85-simplexml \
+  php85-ctype \
+  php85-mbstring \
+  php85-zip \
+  php85-iconv \
+  php85-pecl-imagick \
+  php85-session \
+  php85-tokenizer \
+  php85-gd \
+  php85-pecl-redis \
+  php85-soap \
+  php85-pdo \
+  php85-sqlite3 \
+  php85-pecl-apcu \
   mariadb-client \
   nginx \
   supervisor \
@@ -45,19 +43,38 @@ RUN apk --no-cache add \
   ca-certificates
 
 # Create symlink so programs depending on `php` still function
-RUN ln -s /usr/bin/php83 /usr/bin/php
+# RUN ln -s /usr/bin/php85 /usr/bin/php
+
+# Install vips extension
+RUN apk add --no-cache vips \
+    && apk add --no-cache --virtual .vips-build-deps \
+        php85-dev build-base autoconf pkgconf vips-dev \
+    && curl -fsSL https://pecl.php.net/get/vips-1.0.13.tgz \
+        -o /tmp/vips.tgz \
+    && mkdir /tmp/vips-src \
+    && tar -xzf /tmp/vips.tgz -C /tmp/vips-src --strip-components=1 \
+    && cd /tmp/vips-src \
+    && phpize85 \
+    && ./configure --with-php-config=/usr/bin/php-config85 \
+    && make -j"$(getconf _NPROCESSORS_ONLN)" \
+    && make install \
+    && echo 'extension=vips.so' > /etc/php85/conf.d/50-vips.ini \
+    && cd / \
+    && rm -rf /tmp/vips-src /tmp/vips.tgz \
+    && apk del .vips-build-deps \
+    && php85 --ri vips
 
 # Configure nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
 
 # Configure PHP-FPM
-COPY config/fpm-pool.conf /etc/php83/php-fpm.d/zzz_custom.conf
-COPY config/php.ini /etc/php83/conf.d/zzz_custom.ini
+COPY config/fpm-pool.conf /etc/php85/php-fpm.d/zzz_custom.conf
+COPY config/php.ini /etc/php85/conf.d/zzz_custom.ini
 
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-RUN mkdir -p /usr/src/wordpress /var/log/nginx /var/log/php83 && chown -R nobody: /usr/src/wordpress /var/log/nginx /var/log/php83
+RUN mkdir -p /usr/src/wordpress /var/log/nginx /var/log/php85 && chown -R nobody: /usr/src/wordpress /var/log/nginx /var/log/php85
 WORKDIR /usr/src/wordpress
 
 # Add WP CLI
