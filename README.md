@@ -17,6 +17,8 @@ See [docker-compose.yml](docker-compose.yml) for an example. You should use an e
 
 If you don't mount existing wordpress files, it will install a fresh copy automatically. This may take a second so don't worry if you get a 502 error. After setup, restart the container to update wp-config and install plugins.
 
+PHP-FPM worker limit is set with `FPM_MAX_CHILDREN` (default 8, sized for the default 512 MB `WP_MEM_LIMIT`). Raise it when giving the container more memory
+
 ### WP-CLI
 
 This image includes [wp-cli](https://wp-cli.org/) which can be used like this:

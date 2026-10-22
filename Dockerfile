@@ -69,6 +69,7 @@ COPY config/nginx.conf /etc/nginx/nginx.conf
 
 # Configure PHP-FPM
 COPY config/fpm-pool.conf /etc/php85/php-fpm.d/zzz_custom.conf
+ENV FPM_MAX_CHILDREN=8
 COPY config/php.ini /etc/php85/conf.d/zzz_custom.ini
 
 # Configure supervisord

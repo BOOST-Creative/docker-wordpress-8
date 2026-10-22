@@ -17,6 +17,7 @@ services:
       # DB_HOST: localhost:/tmp/sock/mysqld.sock
       # specify any plugins to install by slug
       # ADDITIONAL_PLUGINS: "better-wp-security simple-cloudflare-turnstile"
+      # FPM_MAX_CHILDREN: 8 # max PHP-FPM workers; raise with WP_MEM_LIMIT
       # cron jobs to run from within container
       # CRON: |
       #   0 * * * * curl http://127.0.0.1/webhook &>/dev/null"
