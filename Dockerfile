@@ -2,7 +2,7 @@ FROM alpine:3.24
 
 # Install packages
 RUN apk --no-cache add \
-  php85 \
+  'php85>=8.5.13-r0' \
   php85-fpm \
   php85-mysqli \
   php85-json \
@@ -33,7 +33,7 @@ RUN apk --no-cache add \
   php85-sqlite3 \
   php85-pecl-apcu \
   mariadb-client \
-  nginx \
+  'nginx>=1.30.7-r0' \
   supervisor \
   inotify-tools \
   curl \
